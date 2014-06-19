@@ -11,6 +11,9 @@ import java.util.Map;
 
 /**
  * Use websocket to retrieve live trades from Bitstamp and add them to the database (through DBWriter).
+ *
+ * Based on example from pusher-java-client. At:
+ * https://github.com/pusher/pusher-java-client/blob/master/src/main/java/com/pusher/client/example/PresenceChannelExampleApp.java
  */
 
 public class BitstampLive implements ConnectionEventListener,

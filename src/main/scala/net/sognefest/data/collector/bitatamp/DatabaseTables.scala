@@ -5,7 +5,7 @@ import scala.slick.jdbc.{StaticQuery => Q}
 
 
 /**
- *
+ *  TODO: Should find out how to create only two table definitions (on for tick and one for granularity).
  */
 
 class TickTable(tag: Tag) extends Table[TickDataPoint](tag, "tick") {
