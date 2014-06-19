@@ -1,7 +1,7 @@
 BitstampCollector
 =================
 ### Depends on:
-/usr/bin/gzip command to unzip cvs-zip-file fast.
+<code>/usr/bin/gzip</code> command to unzip cvs-zip-file fast.
 To use different: edit this line in BitcoinChartsHistoryToDB:
 <code>
 Runtime.getRuntime.exec("/usr/bin/gzip -df " + compressedHistoryFile).waitFor
