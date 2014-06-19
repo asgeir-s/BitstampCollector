@@ -1,10 +1,16 @@
 BitstampCollector
 =================
+### Depends on:
+/usr/bin/gzip command to unzip cvs-zip-file fast.
+To use different: edit this line in BitcoinChartsHistoryToDB:
+<code>
+Runtime.getRuntime.exec("/usr/bin/gzip -df " + compressedHistoryFile).waitFor
+</code>
 
 Lifesycle
 -----------------
 
-STEP1 - Download cvs-zip from Bitcoincharts (the newest trade can be many hours old) and writes it to the database. To the Tick-table.
+STEP1 - Download cvs-zip from Bitcoincharts (the latest trade in the cvs file can be many hours old) and writes it to the database. To the Tick-table.
 
 STEP2 - Generate granularity tables from the tick-table.
 Granularity Tables:
