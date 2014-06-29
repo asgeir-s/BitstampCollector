@@ -14,6 +14,8 @@ class DBWriter(inSession: Session, addTickFromDb: Boolean) {
 
   val tickTable = TableQuery[TickTable]
 
+  var isLive = false
+
   println("Creating data granularity-tables - Start")
   val list: List[TickDataPoint] = tickTable.list
   val iterator = list.iterator
@@ -75,6 +77,10 @@ class DBWriter(inSession: Session, addTickFromDb: Boolean) {
       val row = tableRows(granularity)
       while (row.endTimestamp < tickDataPoint.timestamp) {
         table += row.thisRow
+        if (isLive){
+          // notify trading systems that a new dataPoint is added with id
+          Q.updateNA("NOTIFY " + x._1.toString  + " , '" + table.list.last.id + "'").execute
+        }
         row.updateNoTickNextRow()
       }
       row.addTick(tickDataPoint)
@@ -89,7 +95,9 @@ class DBWriter(inSession: Session, addTickFromDb: Boolean) {
   }
 
   def javaNewTick(sourceId: Long, unixTimestamp: Int, price: Double, amount: Double) {
+    isLive = true
     newTick(TickDataPoint(None, Some(sourceId), unixTimestamp, price, amount))
+
   }
 
   println("Creating granularity-tables - Finished")
