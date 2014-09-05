@@ -46,13 +46,13 @@ class BitcoinChartsHistoryToDB(download: Boolean, decompress: Boolean,
 
   if (writeToDB) {
     // remove table if it exists
-    if (makeTableMap.contains("tick"))
+    if (makeTableMap.contains("bitstamp_btc_usd_tick"))
       tickTable.ddl.drop
     tickTable.ddl.create
 
     println("Writing to database start")
     val filPath = Paths.get(decompressedHistoryFile).toAbsolutePath.toString
-    sql"COPY tick(timestamp, price, amount) FROM '#$filPath' DELIMITER ',' CSV;".as[String].list
+    sql"COPY bitstamp_btc_usd_tick(timestamp, price, amount) FROM '#$filPath' DELIMITER ',' CSV;".as[String].list
     println("Writing to database finish")
   }
 

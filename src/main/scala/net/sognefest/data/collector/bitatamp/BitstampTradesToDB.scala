@@ -3,6 +3,7 @@ package net.sognefest.data.collector.bitatamp
 import java.io._
 import java.net._
 
+import com.cctrader.data.TickDataPoint
 import org.json4s._
 import org.json4s.native.JsonMethods._
 

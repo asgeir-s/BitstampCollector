@@ -3,6 +3,8 @@ package net.sognefest.data.collector.bitatamp
 import java.io._
 import java.net._
 
+import com.cctrader.data.TickDataPoint
+
 import scala.slick.jdbc.{StaticQuery => Q}
 import scala.slick.lifted.TableQuery
 

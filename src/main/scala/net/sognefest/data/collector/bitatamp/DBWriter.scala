@@ -1,6 +1,8 @@
 package net.sognefest.data.collector.bitatamp
 
 
+import com.cctrader.data.{DataPoint, TickDataPoint}
+
 import scala.slick.driver.PostgresDriver.simple._
 import scala.slick.jdbc.meta.MTable
 import scala.slick.jdbc.{StaticQuery => Q}
@@ -22,31 +24,31 @@ class DBWriter(inSession: Session, addTickFromDb: Boolean) {
   var tickDataPoint = iterator.next()
 
   val tableMap = Map(
-    Granularity.min1 -> TableQuery[Min1Table],
-    Granularity.min2 -> TableQuery[Min2Table],
-    Granularity.min5 -> TableQuery[Min5Table],
-    Granularity.min10 -> TableQuery[Min10Table],
-    Granularity.min15 -> TableQuery[Min15Table],
-    Granularity.min30 -> TableQuery[Min30Table],
-    Granularity.hour1 -> TableQuery[Hour1Table],
-    Granularity.hour2 -> TableQuery[Hour2Table],
-    Granularity.hour5 -> TableQuery[Hour5Table],
-    Granularity.hour12 -> TableQuery[Hour12Table],
-    Granularity.day -> TableQuery[DayTable]
+    "bitstamp_btc_usd_1min" -> TableQuery[InstrumentTable]((tag:Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_1min")),
+    "bitstamp_btc_usd_2min" -> TableQuery[InstrumentTable]((tag:Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_2min")),
+    "bitstamp_btc_usd_5min" -> TableQuery[InstrumentTable]((tag:Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_5min")),
+    "bitstamp_btc_usd_10min" -> TableQuery[InstrumentTable]((tag:Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_10min")),
+    "bitstamp_btc_usd_15min" -> TableQuery[InstrumentTable]((tag:Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_15min")),
+    "bitstamp_btc_usd_30min" -> TableQuery[InstrumentTable]((tag:Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_30min")),
+    "bitstamp_btc_usd_1hour" -> TableQuery[InstrumentTable]((tag:Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_1hour")),
+    "bitstamp_btc_usd_2hour" -> TableQuery[InstrumentTable]((tag:Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_2hour")),
+    "bitstamp_btc_usd_5hour" -> TableQuery[InstrumentTable]((tag:Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_5hour")),
+    "bitstamp_btc_usd_12hour" -> TableQuery[InstrumentTable]((tag:Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_12hour")),
+    "bitstamp_btc_usd_day" -> TableQuery[InstrumentTable]((tag:Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_day"))
   )
 
   val tableRows = Map(
-    Granularity.min1 -> NextRow(60, tickDataPoint),
-    Granularity.min2 -> NextRow(120, tickDataPoint),
-    Granularity.min5 -> NextRow(300, tickDataPoint),
-    Granularity.min10 -> NextRow(600, tickDataPoint),
-    Granularity.min15 -> NextRow(900, tickDataPoint),
-    Granularity.min30 -> NextRow(1800, tickDataPoint),
-    Granularity.hour1 -> NextRow(3600, tickDataPoint),
-    Granularity.hour2 -> NextRow(7200, tickDataPoint),
-    Granularity.hour5 -> NextRow(18000, tickDataPoint),
-    Granularity.hour12 -> NextRow(43200, tickDataPoint),
-    Granularity.day -> NextRow(86400, tickDataPoint)
+    "bitstamp_btc_usd_1min" -> NextRow(60, tickDataPoint),
+    "bitstamp_btc_usd_2min" -> NextRow(120, tickDataPoint),
+    "bitstamp_btc_usd_5min" -> NextRow(300, tickDataPoint),
+    "bitstamp_btc_usd_10min" -> NextRow(600, tickDataPoint),
+    "bitstamp_btc_usd_15min" -> NextRow(900, tickDataPoint),
+    "bitstamp_btc_usd_30min" -> NextRow(1800, tickDataPoint),
+    "bitstamp_btc_usd_1hour" -> NextRow(3600, tickDataPoint),
+    "bitstamp_btc_usd_2hour" -> NextRow(7200, tickDataPoint),
+    "bitstamp_btc_usd_5hour" -> NextRow(18000, tickDataPoint),
+    "bitstamp_btc_usd_12hour" -> NextRow(43200, tickDataPoint),
+    "bitstamp_btc_usd_day" -> NextRow(86400, tickDataPoint)
   )
   // drop all tables if exists and create new once.
   tableMap.foreach(x => {

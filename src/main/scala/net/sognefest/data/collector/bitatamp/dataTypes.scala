@@ -1,4 +1,4 @@
-package net.sognefest.data.collector.bitatamp
+package com.cctrader.data
 
 import java.util.Date
 
@@ -42,35 +42,27 @@ case class TickDataPoint(
   val date = new Date(timestamp * 1000L)
 }
 
+/**
+ *
+ * @param id my id for the trade, set automatically. Use None for creation
+ * @param writettimestamp the the signal is written to the database
+ * @param dptimestamp time on dataPoint (that lead to the trade)
+ * @param signal BUY, SELL
+ */
+case class Trade(
+                  id: Option[Long],
+                  writettimestamp: Int,
+                  dptimestamp: Int,
+                  signal: String,
+                  price: Double)
 
-object Granularity extends Enumeration {
-  type Granularity = Value
-  val min1 = Value("min1")
-  val min2 = Value("min2")
-  val min5 = Value("min5")
-  val min10 = Value("min10")
-  val min15 = Value("min15")
-  val min30 = Value("min30")
-  val hour1 = Value("hour1")
-  val hour2 = Value("hour2")
-  val hour5 = Value("hour5")
-  val hour12 = Value("hour12")
-  val day = Value("day")
-  val tick = Value("tick")
+
+object Signal extends Enumeration {
+  type Signal = Value
+  val LOONG, SHORT, CLOSE = Value
 }
 
-object Exchange extends Enumeration {
-  type Exchange = Value
-  val bitstamp, btcChina = Value
-}
-
-
-object OrderType extends Enumeration {
-  type OrderType = Value
-  val BUY, SELL = Value
-}
-
-object CurrencyPair extends Enumeration {
-  type CurrencyPair = Value
-  val BTC_USD = Value
+object Mode extends Enumeration {
+  type Mode = Value
+  val TESTING, LIVE = Value
 }
