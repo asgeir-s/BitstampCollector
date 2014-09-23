@@ -1,6 +1,8 @@
 package net.sognefest.data.collector.bitatamp
 
 
+import java.util.Date
+
 import com.cctrader.data.{DataPoint, TickDataPoint}
 
 import scala.slick.driver.PostgresDriver.simple._
@@ -38,7 +40,12 @@ class DBWriter(inSession: Session, addTickFromDb: Boolean) {
 
   val tableRows = {
     if (!addTickFromDb) {
-      tickDataPoint = list.last
+      tickDataPoint = {
+        val lengthString = tickTable.length.run
+        val lastRow = tickTable.filter(x => x.id === lengthString.toLong).take(1)
+        val value = lastRow.firstOption
+        value.get
+      }
     }
     Map(
       "bitstamp_btc_usd_1min" -> NextRow(60, tickDataPoint),

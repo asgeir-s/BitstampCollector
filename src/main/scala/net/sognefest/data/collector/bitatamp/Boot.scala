@@ -11,7 +11,7 @@ import scala.slick.jdbc.JdbcBackend._
 object Boot extends App {
 
   val config = ConfigFactory.load()
-  val resetDB = true
+  val resetDB = false
 
   val databaseFactory = Database.forURL(
     url = "jdbc:postgresql://" + config.getString("postgres.host") + ":" + config.getString("postgres.port") + "/" + config
