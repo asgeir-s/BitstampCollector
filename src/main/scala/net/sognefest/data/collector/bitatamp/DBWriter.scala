@@ -18,47 +18,53 @@ class DBWriter(inSession: Session, addTickFromDb: Boolean) {
 
   var isLive = false
 
-  println("Creating data granularity-tables - Start")
   val list: List[TickDataPoint] = tickTable.list
   val iterator = list.iterator
   var tickDataPoint = iterator.next()
 
   val tableMap = Map(
-    "bitstamp_btc_usd_1min" -> TableQuery[InstrumentTable]((tag:Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_1min")),
-    "bitstamp_btc_usd_2min" -> TableQuery[InstrumentTable]((tag:Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_2min")),
-    "bitstamp_btc_usd_5min" -> TableQuery[InstrumentTable]((tag:Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_5min")),
-    "bitstamp_btc_usd_10min" -> TableQuery[InstrumentTable]((tag:Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_10min")),
-    "bitstamp_btc_usd_15min" -> TableQuery[InstrumentTable]((tag:Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_15min")),
-    "bitstamp_btc_usd_30min" -> TableQuery[InstrumentTable]((tag:Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_30min")),
-    "bitstamp_btc_usd_1hour" -> TableQuery[InstrumentTable]((tag:Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_1hour")),
-    "bitstamp_btc_usd_2hour" -> TableQuery[InstrumentTable]((tag:Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_2hour")),
-    "bitstamp_btc_usd_5hour" -> TableQuery[InstrumentTable]((tag:Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_5hour")),
-    "bitstamp_btc_usd_12hour" -> TableQuery[InstrumentTable]((tag:Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_12hour")),
-    "bitstamp_btc_usd_day" -> TableQuery[InstrumentTable]((tag:Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_day"))
+    "bitstamp_btc_usd_1min" -> TableQuery[InstrumentTable]((tag: Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_1min")),
+    "bitstamp_btc_usd_2min" -> TableQuery[InstrumentTable]((tag: Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_2min")),
+    "bitstamp_btc_usd_5min" -> TableQuery[InstrumentTable]((tag: Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_5min")),
+    "bitstamp_btc_usd_10min" -> TableQuery[InstrumentTable]((tag: Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_10min")),
+    "bitstamp_btc_usd_15min" -> TableQuery[InstrumentTable]((tag: Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_15min")),
+    "bitstamp_btc_usd_30min" -> TableQuery[InstrumentTable]((tag: Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_30min")),
+    "bitstamp_btc_usd_1hour" -> TableQuery[InstrumentTable]((tag: Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_1hour")),
+    "bitstamp_btc_usd_2hour" -> TableQuery[InstrumentTable]((tag: Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_2hour")),
+    "bitstamp_btc_usd_5hour" -> TableQuery[InstrumentTable]((tag: Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_5hour")),
+    "bitstamp_btc_usd_12hour" -> TableQuery[InstrumentTable]((tag: Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_12hour")),
+    "bitstamp_btc_usd_day" -> TableQuery[InstrumentTable]((tag: Tag) => new InstrumentTable(tag, "bitstamp_btc_usd_day"))
   )
 
-  val tableRows = Map(
-    "bitstamp_btc_usd_1min" -> NextRow(60, tickDataPoint),
-    "bitstamp_btc_usd_2min" -> NextRow(120, tickDataPoint),
-    "bitstamp_btc_usd_5min" -> NextRow(300, tickDataPoint),
-    "bitstamp_btc_usd_10min" -> NextRow(600, tickDataPoint),
-    "bitstamp_btc_usd_15min" -> NextRow(900, tickDataPoint),
-    "bitstamp_btc_usd_30min" -> NextRow(1800, tickDataPoint),
-    "bitstamp_btc_usd_1hour" -> NextRow(3600, tickDataPoint),
-    "bitstamp_btc_usd_2hour" -> NextRow(7200, tickDataPoint),
-    "bitstamp_btc_usd_5hour" -> NextRow(18000, tickDataPoint),
-    "bitstamp_btc_usd_12hour" -> NextRow(43200, tickDataPoint),
-    "bitstamp_btc_usd_day" -> NextRow(86400, tickDataPoint)
-  )
-  // drop all tables if exists and create new once.
-  tableMap.foreach(x => {
-    if (makeTableMap.contains(x._1.toString)) {
-      x._2.ddl.drop
+  val tableRows = {
+    if (!addTickFromDb) {
+      tickDataPoint = list.last
     }
-    x._2.ddl.create
-  })
+    Map(
+      "bitstamp_btc_usd_1min" -> NextRow(60, tickDataPoint),
+      "bitstamp_btc_usd_2min" -> NextRow(120, tickDataPoint),
+      "bitstamp_btc_usd_5min" -> NextRow(300, tickDataPoint),
+      "bitstamp_btc_usd_10min" -> NextRow(600, tickDataPoint),
+      "bitstamp_btc_usd_15min" -> NextRow(900, tickDataPoint),
+      "bitstamp_btc_usd_30min" -> NextRow(1800, tickDataPoint),
+      "bitstamp_btc_usd_1hour" -> NextRow(3600, tickDataPoint),
+      "bitstamp_btc_usd_2hour" -> NextRow(7200, tickDataPoint),
+      "bitstamp_btc_usd_5hour" -> NextRow(18000, tickDataPoint),
+      "bitstamp_btc_usd_12hour" -> NextRow(43200, tickDataPoint),
+      "bitstamp_btc_usd_day" -> NextRow(86400, tickDataPoint)
+    )
+  }
 
   if (addTickFromDb) {
+    println("Creating new data granularity-tables - Start")
+    // drop all tables if exists and create new once.
+    tableMap.foreach(x => {
+      if (makeTableMap.contains(x._1.toString)) {
+        x._2.ddl.drop
+      }
+      x._2.ddl.create
+    })
+    //add all ticks
     while (iterator.hasNext) {
       tickDataPoint = iterator.next()
       granulateTick(tickDataPoint)
@@ -79,9 +85,9 @@ class DBWriter(inSession: Session, addTickFromDb: Boolean) {
       val row = tableRows(granularity)
       while (row.endTimestamp < tickDataPoint.timestamp) {
         table += row.thisRow
-        if (isLive){
+        if (isLive) {
           // notify trading systems that a new dataPoint is added with id
-          Q.updateNA("NOTIFY " + x._1.toString  + " , '" + table.list.last.id + "'").execute
+          Q.updateNA("NOTIFY " + x._1.toString + " , '" + table.list.last.id + "'").execute
         }
         row.updateNoTickNextRow()
       }
@@ -127,6 +133,7 @@ class DBWriter(inSession: Session, addTickFromDb: Boolean) {
       close = tick.price
       endTimestamp = tick.timestamp + intervalSec
       lastSourceId = tick.sourceId
+      println("end time:" + endTimestamp)
     }
 
     def addTick(tick: TickDataPoint): Unit = {

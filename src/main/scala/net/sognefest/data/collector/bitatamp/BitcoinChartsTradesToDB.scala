@@ -31,5 +31,4 @@ class BitcoinChartsTradesToDB(dbWriter: DBWriter) {
   })
   println("BitcoinChartsTradesToDB: getEndTime:" + dbWriter.getEndTime)
 
-
 }
