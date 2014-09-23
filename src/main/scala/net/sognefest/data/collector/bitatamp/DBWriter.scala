@@ -133,7 +133,6 @@ class DBWriter(inSession: Session, addTickFromDb: Boolean) {
       close = tick.price
       endTimestamp = tick.timestamp + intervalSec
       lastSourceId = tick.sourceId
-      println("end time:" + endTimestamp)
     }
 
     def addTick(tick: TickDataPoint): Unit = {
